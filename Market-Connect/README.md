@@ -3,7 +3,16 @@
 PRODUCT NAME - MARKET-CONNECT 
 PRODUCT OWNER - GROUP ONE
 
-OVERVIEW  
+OVERVIEW
+
+With the increase of eCommerce, retailers are being faced with extreme pressure to keep their profit margins healthy. In actual fact, poor inventory management has been a foremost element in why many companies collapse. Appropriate investment in inventory control is a requirement to avoid losses as well as to sustain profitability. This is where the link between sales and inventory control is significant as a business owner can only know the levels of inventory stock which are available if it is known what has been bought as well as what has been sold.
+
+The proper recording of sales allows the business owner to know, for example:
+
+When inventory stock levels are running low,
+If this should be reordered and, if so, how much needs to be bought.
+Precisely recording a sale every time profoundly eases this planning process with the help of a sound inventory management system. This type of system can assist with identifying issues such as under-stocking items in addition to over-stocking items that can directly affect cash flow. In turn, this helps the company owner keep track of the profitability of a business and make decisions about the future of the organisation.
+
 The Market-connect products create a flexible and easy connection within all chain of marketing stage, taking away inconveniences in the scope of product delivering, it will allow the manufacturer to have full attention and access to the way the business prevail and satisfaction of his final customers.
 
 USERS TYPE 
