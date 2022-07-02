@@ -20,7 +20,26 @@ function updateInput() {
     })
 }
 
+function userInfo() {
+    return Joi.object({
+        "username": Joi.string().min(5).required(),
+        "email": Joi.string().email().required(),
+        "password": Joi.string().min(8).required(),
+        "phone": Joi.string().min(8).required(),
+        "userType": Joi.string().min(4).max(5).required()
+    })
+}
+
+function userDetails() {
+    return Joi.object({
+        "email": Joi.string().email().required(),
+        "password": Joi.string().min(8).required(),
+    })
+}
+
 module.exports = {
     newInput,
-    updateInput
+    updateInput,
+    userInfo,
+    userDetails
 }
