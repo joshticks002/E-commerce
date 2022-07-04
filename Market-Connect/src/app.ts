@@ -10,34 +10,30 @@ const { errorHandler } = require('./middlewares/errorHandler');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const pagesRouter = require('./routes/pages');
 
 const app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, '../views'));
-app.set('view engine', 'ejs');
+app.set("views", path.join(__dirname, "../views"));
+app.set("view engine", "ejs");
 
-app.use(logger('dev'));
+app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static(path.join(__dirname, "../public")));
 
-
+app.use('/', pagesRouter);
 app.use('/api/products', indexRouter);
 app.use('/users', usersRouter);
-app.use('/home', (req: Request, res: Response) => {
-  res.status(404).json({
-      message: 'Welcome to Market-Connect' 
-  })
-});
-
 app.use(errorHandler)
+
 app.use((req: Request, res: Response, next: NextFunction) => {
-    res.status(404).json({
-        message: 'OOPS, page not found :)' 
-    })
-    next()
-})
+  res.status(404).json({
+    message: "OOPS, page not found :)",
+  });
+  next();
+});
 
 export default app;

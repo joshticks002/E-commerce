@@ -1,8 +1,170 @@
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  min-height: 100vh;
 }
 
 a {
-  color: #00B7FF;
+  color: black;
+}
+
+.imageback{
+  background-image: url("https://images.pexels.com/photos/684152/pexels-photo-684152.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  height: 730px;
+}
+.bigt{
+  font-size: 5rem;
+  font-weight: 900px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  color: white;
+}
+
+.smallt{
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+}
+.text{
+  padding-top: 200px;
+}
+.proimg img{
+    height: 500px;
+    width: 100%;
+    border-radius: 6px;
+    box-shadow: 0px 0px 15px #000;
+    margin-bottom: 30px;
+}
+
+.proimg img:hover{
+  box-shadow: 0px 0px 15px #000;
+  transform: scale(1.1);
+}
+
+.proimg{
+  text-align: center;
+  font-size: larger;
+  text-decoration: none;
+}
+.wordp{
+  font-size: 2rem;
+  color: rgb(16, 67, 16);
+  padding-bottom: 40px;
+  font-weight: 900;
+
+}
+
+.product{
+  margin-top: 80px;
+}
+
+.agentw{
+  margin-top: 80px;
+  background-color: rgb(247, 250, 247);
+  padding-top: 30px;
+  padding-bottom: 30px;
+  height: 600px;
+}
+.contents{
+  margin-top: 150px;
+}
+.contents h1{
+  font-size: 3rem;
+  font-weight: bold;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  color: rgb(2, 49, 2);
+}
+.contents p{
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  color: rgb(2, 49, 2);
+}
+.agen img{
+  height: 500px;
+  width: 400px;
+  float: right;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.contents button{
+  background-color: rgb(196, 243, 196);
+  color: black;
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  border: none;
+  border-radius: 6px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.contents button:hover{
+ border: 1px solid black;
+  box-shadow: 0 0 5px #000;
+}
+.navbar-brand{
+  font-size: 2rem;
+  font-weight: bold;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  color: rgb(2, 49, 2);
+}
+.registers{
+  margin-top: 150px;
+  margin-bottom: 100px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  text-align: center;
+  border: 1px solid black;
+  border-radius: 6px;
+  background-color: rgb(239, 244, 239);
+}
+.registers h1{
+    padding-bottom: 30px;
+    font-weight: bolder;
+}
+
+footer{
+  width: 100%;
+  color: white;
+  background-color: rgb(1, 62, 1);
+  padding-top: 40px;
+  border-top-left-radius: 0.6em;
+  border-top-right-radius: 0.6em;
+  bottom: 0;
+}
+#des{
+  color: rgb(9, 9, 232);
+}
+#city{
+  color:rgb(239, 16, 16);
+}
+#time{
+  color:rgb(24, 149, 198)
+}
+
+.addressf h3{
+  padding-left: 10px;
+  margin-top: 40px;
+  font-weight: bold;
+ }
+ .addressf h6{
+ padding-left: 3px;
+ }
+ 
+.servicet h3, .accounttxt h3 {
+  margin-top: 40px;
+  font-weight: bold;
+}
+.servicet li, .accounttxt li{
+  font-size:medium;
+  padding-top: 9px;
+}
+
+.location{
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 40px;
 }
