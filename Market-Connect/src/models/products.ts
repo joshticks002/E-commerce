@@ -33,7 +33,7 @@ const dbSchema = new mongoModel.Schema(
       required: [true, "Please include the size"],
     },
     "Amount Earned": {
-      type: String,
+      type: Number,
       required: [true, "Please add the maker"],
     },
   },

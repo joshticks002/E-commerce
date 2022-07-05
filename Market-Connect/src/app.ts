@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const methodOverride = require('method-override')
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const dotenv = require('dotenv').config()
@@ -23,6 +24,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "../public")));
+app.use(methodOverride('_method'))
 
 app.use('/', pagesRouter);
 app.use('/api/products', indexRouter);
@@ -30,7 +32,12 @@ app.use('/users', usersRouter);
 app.use(errorHandler)
 
 app.use((req: Request, res: Response, next: NextFunction) => {
-  res.status(404).json({
+  res.status(404).render("404", {
+    title: "Error",
+    token: req.cookies.Token || "0",
+    uid: req.cookies.Uid || "0",
+    user: req.cookies.Username || "0",
+    Type: req.cookies.Type || "none",
     message: "OOPS, page not found :)",
   });
   next();

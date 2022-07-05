@@ -1,12 +1,8 @@
-<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Payment Page</title>
-  </head>
-  <body>
+<%- include("./partial/head.ejs") %>
+
+<body>
+  <%- include("./partial/navbar.ejs") %>
     <form id="paymentForm">
       <div class="form-group">
         <label for="email">Email Address</label>
@@ -28,6 +24,7 @@
         <button type="submit" onclick="payWithPaystack()">Pay</button>
       </div>
     </form>
+    
     <script src="https://js.paystack.co/v1/inline.js"></script>
     <script>
       const paymentForm = document.getElementById("paymentForm");
@@ -51,5 +48,6 @@
         handler.openIframe();
       }
     </script>
-  </body>
+  <%- include("./partial/footer.ejs") %>
+</body>
 </html>

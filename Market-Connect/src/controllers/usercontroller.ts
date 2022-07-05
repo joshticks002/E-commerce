@@ -13,15 +13,38 @@ const generateToken = (id: string) => {
 };
 
 const getUsers = asyncHandler(async (req: Request, res: Response) => {
-  const allUsers = await Model.find()  
-  const filtered = allUsers.filter((user: { Agent: boolean; User: boolean; }) => user.Agent === true || user.User === true);
-  res.status(201).render('usersInfo', { title: 'Users Info',
-                                        users: [...filtered],
-                                        "token": req.cookies.Token,
-                                        "uid": req.cookies.Uid,
-                                        "user": req.cookies.Username,
-                                        "Type": req.cookies.Type})
-})
+  const allUsers = await Model.find();
+  const filtered = allUsers.filter(
+    (user: { User: boolean }) => user.User === true
+  );
+  res
+    .status(201)
+    .render("usersInfo", {
+      title: "Users Info",
+      users: [...filtered],
+      token: req.cookies.Token,
+      uid: req.cookies.Uid,
+      user: req.cookies.Username,
+      Type: req.cookies.Type,
+    });
+});
+
+const getAgents = asyncHandler(async (req: Request, res: Response) => {
+  const allAgents = await Model.find();
+  const filtered = allAgents.filter(
+    (user: { Agent: boolean }) => user.Agent === true
+  );
+  res
+    .status(201)
+    .render("agentInfo", {
+      title: "Agents Info",
+      users: [...filtered],
+      token: req.cookies.Token,
+      uid: req.cookies.Uid,
+      user: req.cookies.Username,
+      Type: req.cookies.Type,
+    });
+});
 
 const registerUser = asyncHandler(async (req: Request, res: Response) => {
   let isAgent = false;
@@ -71,83 +94,85 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
     }
   }
 
-    // Create user
-    const user = await Model.create({
-      username,
-      email: email.toLowerCase(),
-      password: hashedPassword,
-      phone,
-      balance: 0,
-      products: [],
-      cart: [],
-      prevTransactions: [],
-      User: isUser,
-      Agent: isAgent,
-      Admin: isAdmin,
-      isBanned: false
-    })
+  // Create user
+  const user = await Model.create({
+    username,
+    email: email.toLowerCase(),
+    password: hashedPassword,
+    phone,
+    balance: 0,
+    products: [],
+    cart: [],
+    prevTransactions: [],
+    User: isUser,
+    Agent: isAgent,
+    Admin: isAdmin,
+    isBanned: false,
+  });
 
-    const viewableInfo = await Viewable.create({ 
-      Uid: user._id,
-      username,
-      email: email.toLowerCase(),
-      phone,
-      products: [],
-      cart: [],
-      prevTransactions: [],
-      User: isUser,
-      Agent: isAgent,
-      isBanned: false
-    })
+  const viewableInfo = await Viewable.create({
+    Uid: user._id,
+    username,
+    email: email.toLowerCase(),
+    phone,
+    products: [],
+    cart: [],
+    prevTransactions: [],
+    User: isUser,
+    Agent: isAgent,
+    isBanned: false,
+  });
 
-    // register user
-    if (user) {
-      const mytoken = generateToken(user._id)
-      let typeOfUser = "none"
-      if (user.Admin === true) typeOfUser = "Admin"
-      if (user.Agent === true) typeOfUser = "Agent"
-      if (user.User === true) typeOfUser = "User"
+  // register user
+  if (user) {
+    const mytoken = generateToken(user._id);
+    let typeOfUser = "none";
+    if (user.Admin === true) typeOfUser = "Admin";
+    if (user.Agent === true) typeOfUser = "Agent";
+    if (user.User === true) typeOfUser = "User";
 
-      res.cookie("Token", mytoken);
-      res.cookie("Uid", user._id);
-      res.cookie("Username", user.username);
-      res.cookie("Balance", user.balance);
-      res.cookie("Type", typeOfUser);
-      res.status(201).redirect('/home')
-    }
-})
+    res.cookie("Token", mytoken);
+    res.cookie("Uid", user._id);
+    res.cookie("Username", user.username);
+    res.cookie("Balance", user.balance);
+    res.cookie("Type", typeOfUser);
+    res.status(201).redirect("/home");
+  }
+});
 
 const userLogin = asyncHandler(async (req: Request, res: Response) => {
-  const { email, password } = req.body
+  const { email, password } = req.body;
 
-  const body = req.body
+  const body = req.body;
   await userDetails().validateAsync({
-      "email": body.email,
-      "password": body.password
-  })
+    email: body.email,
+    password: body.password,
+  });
 
   // Check for user email
-  const user = await Model.find({ email: email.toLowerCase()})
-  
-  if ((user.length > 0) && (await bcrypt.compare(password, user[0].password))) {
-    if (user[0].isBanned === false) {
-      let typeOfUser = "none"
-      if (user[0].Admin === true) typeOfUser = "Admin"
-      if (user[0].Agent === true) typeOfUser = "Agent"
-      if (user[0].User === true) typeOfUser = "User"
+  const user = await Model.find({ email: email.toLowerCase() });
 
-      const mytoken = generateToken(user[0]._id)
-      res.cookie('Token', mytoken)
-      res.cookie('Uid', user[0]._id)
-      res.cookie('Username', user[0].username)
-      res.cookie('Balance', user[0].balance)
-      res.cookie('Type', typeOfUser)
-      
+  if (user.length > 0 && (await bcrypt.compare(password, user[0].password))) {
+    if (user[0].isBanned === false) {
+      let typeOfUser = "none";
+      if (user[0].Admin === true) typeOfUser = "Admin";
+      if (user[0].Agent === true) typeOfUser = "Agent";
+      if (user[0].User === true) typeOfUser = "User";
+
+      const mytoken = generateToken(user[0]._id);
+      res.cookie("Token", mytoken);
+      res.cookie("Uid", user[0]._id);
+      res.cookie("Username", user[0].username);
+      res.cookie("Balance", user[0].balance);
+      res.cookie("Type", typeOfUser);
+
       // res.status(201).json({Token: mytoken})
-      res.status(201).redirect('/home')
+      res.status(201).redirect("/home");
     } else {
-      res.status(400)
-      throw new Error('You have been banned from rendering service on this platform. Please contact the administrator.')
+      res.status(400);
+      throw new Error(
+        "You have been banned from rendering service on this platform. Please contact the administrator."
+      );
     }
   } else {
     res.status(400);
@@ -156,20 +181,21 @@ const userLogin = asyncHandler(async (req: Request, res: Response) => {
 });
 
 const logoutUser = asyncHandler(async (req: Request, res: Response) => {
-    res.cookie('Token', '')
-    res.cookie('Type', '')
-    req.cookies.Token = ''
-    req.cookies.Username = ''
-    req.cookies.Uid = ''
-    req.cookies.Balance = 0
-    req.cookies.Type = "none"
+  res.cookie("Token", "");
+  res.cookie("Type", "");
+  req.cookies.Token = "";
+  req.cookies.Username = "";
+  req.cookies.Uid = "";
+  req.cookies.Balance = 0;
+  req.cookies.Type = "none";
 
-    res.status(201).redirect('/login')
-})
+  res.status(201).redirect("/login");
+});
 
 module.exports = {
   registerUser,
   userLogin,
   logoutUser,
   getUsers,
+  getAgents,
 };

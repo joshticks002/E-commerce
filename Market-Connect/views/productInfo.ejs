@@ -12,24 +12,16 @@
 
             
         <div class="m1-2 mb-1">
+          <img src="<%= product.imageUrl %>" alt="shoe/wears/accessories" class="photos">
           <p>Name: <%= product.name %></p>
           <p>Quantity: <%= product.Quantity %> in stock</p>
           <p>Price: <%= product.price %></p>
           <p>size: <%= product.size %></p>
-
-          <form action="/api/product/purchase/<%= product._id %>" method="POST">
-            <div class="form-group">
-              <label class="form-label">Quantity:</label>
-              <input type="text" class="form-control" name="Quantity">
-            </div>
-            <button type="submit" class="btn btn-success">Buy</button>
-          </form>
-
-          <h3><a href="/api/product/cart/<%= product._id %>">Add to Cart</a></h3>
+          <p>Type: <%= product.type %></p>
         </div>
 
             <% if (Type === 'Admin') { %>
-              <form action="/api/products/<%= product._id %>?_method=PUT" method="POST">
+              <form action="/api/products/update/<%= product._id %>?_method=PUT" method="POST">
                 <div class="form-group">
                   <label for="name" class="form-label">Name:</label>
                   <input type="text" name="name" class="form-control">
@@ -51,14 +43,24 @@
                   <input type="text" class="form-control" name="size">
                 </div>
                 <div class="form-group">
-                  <label for="body" class="form-label">Type:</label>
-                  <input type="text" class="form-control"" name="type">
+                  <label for="name" class="form-label">Image Url:</label>
+                  <input type="text" name="imageUrl" class="form-control">
                 </div>
+                <div class="form-group">
+                  <label for="type">Choose a type:</label>
+                 <select name="type" class="form-select form-select-lg mb-3">
+                      <option selected value="shoe">Shoe</option>
+                      <option value="wears">Wears</option>
+                      <option value="accessories">Accessories</option>
+                  </select>
+              </div>
                   <button type="submit" class="btn btn-success">Edit product</button>
               </form>
+
               <form action="/api/products/<%= product._id %>?_method=DELETE" method="POST">
                   <button type="submit" class="btn btn-danger">Delete Product</button>
               </form>
+              
               <br/>
               <a href="/api/products" class="btn btn-secondary">Go to Home</a>
               <a href="/newproduct" class="btn btn-warning">Add new product</a>

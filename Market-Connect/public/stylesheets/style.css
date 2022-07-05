@@ -1,6 +1,7 @@
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  min-height: 100vh;
+  position: relative;
+  padding-bottom: 300px;
 }
 
 a {
@@ -134,6 +135,7 @@ footer{
   border-top-left-radius: 0.6em;
   border-top-right-radius: 0.6em;
   bottom: 0;
+  position:absolute;
 }
 #des{
   color: rgb(9, 9, 232);
@@ -147,24 +149,50 @@ footer{
 
 .addressf h3{
   padding-left: 10px;
-  margin-top: 40px;
+  margin-top: 10px;
   font-weight: bold;
+
  }
  .addressf h6{
  padding-left: 3px;
  }
  
 .servicet h3, .accounttxt h3 {
-  margin-top: 40px;
+  margin-top: 10px;
   font-weight: bold;
 }
 .servicet li, .accounttxt li{
   font-size:medium;
   padding-top: 9px;
+  list-style-type: none;
+  
 }
 
 .location{
   display: flex;
   justify-content: space-between;
   padding-bottom: 40px;
+}
+.usethem{
+  border: 2px solid black;
+  padding: 50px;
+  margin-bottom: 50px;
+  background-color: rgb(231, 243, 232);
+}
+.yuse{
+  font-size: 2rem;
+  font-weight: bolder;
+  text-align: center;
+  margin: 40px;
+}
+.addpb{
+  margin: 40px ;
+  font-weight: bold;
+}
+.copyrig{
+padding: 20px;
+  text-align: center;
+}
+.moveleft{
+  margin-left: -140px;
 }

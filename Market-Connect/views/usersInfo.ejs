@@ -5,30 +5,18 @@
   <%- include("./partial/navbar.ejs") %>
 
   <div class="blogs content">
-    <h1>Users</h1>
+    <h1 class="yuse">Users</h1>
 
     <% if (users.length > 0) { %>
       <% users.forEach(usr => { %>
-        <div class="m1-2 mb-1">
-          <p>Balance: $<%= usr.balance %></p>
-          <p>Username: <%= usr.username %></p>
-          <p>Email: <%= usr.email %></p>
-          <p>Phone: <%= usr.phone %></p>
-          <div><h4 class="products">Personal Products</h4>
-            <% if (usr.products.length > 0) { %>
-                <% usr.products.forEach(prd => { %>
-                    <p>Name: <%= prd.name %></p>
-                    <p>Quantity: <%= prd.Quantity %></p>
-                    <p>Price: <%= prd.price %></p>
-                    <p>size: <%= prd.size %></p>
-                    <p>Order Time: <%= prd.timeOfTrans %></p>
-                <% }) %>
-            <% } else { %>
-                <p>No product to display</p>
-            <% } %>
-           </div>
+        <div class="m1-2 mb-1 usethem">
+          <h5 class="trans"><b>User Info</b></h5>
+          <p><b>Balance:</b> $<%= usr.balance %></p>
+          <p><strong>Username:</strong> <%= usr.username %></p>
+          <p><strong>Email:</strong> <%= usr.email %></p>
+          <p><strong>Phone:</strong> <%= usr.phone %></p>
 
-           <div><h4 class="trans">Previous Transaction</h4>
+           <div><h5 class="trans"><b>Previous Transaction</b></h5>
             <% if (usr.prevTransactions.length > 0) { %>
                 <% usr.prevTransactions.forEach(trans => { %>
                     <p>Order: <%= trans.prdName %></p>
@@ -45,11 +33,6 @@
       <% }) %>
     <% } else { %>
       <p>There is no user to display...</p>
-    <% } %>
-
-    <br/>
-    <% if (Type === 'Admin') { %>
-    <a href="/newproduct" class="btn btn-warning">Add new Product(s)</a>
     <% } %>
   </div>
 

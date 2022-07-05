@@ -11,6 +11,10 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/home">Home</a>
         </li>
+        
+        <li class="nav-item">
+          <a class="nav-link" href="/api/products">Market</a>
+        </li>
         <% if (!token) { %>
           <li class="nav-item">
             <a class="nav-link" href="/register">Sign Up</a>
@@ -21,7 +25,20 @@
         <% } else if (token) { %>
           <% if (Type === 'Admin') { %>
             <li class="nav-item">
-              <a class="nav-link" href="/users/all">Users</a>
+              <a class="nav-link" href="/users/agents">Agents</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/users/users">Users</a>
+            </li>
+          <% } %>
+          <% if (Type === 'User') { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/users/cart">Cart</a>
+            </li>
+          <% } %>
+          <% if (Type === 'Agent') { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/users/products">Products</a>
             </li>
           <% } %>
           <li class="nav-item">
@@ -32,10 +49,10 @@
           </li>
         <% } %>
         <li class="nav-item" style="padding-top:3px; padding-left:3px;">
-          <form class="d-flex" role="search">
-      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success" type="submit">Search</button>
-    </form>
+        <form action="/api/products/name" class="d-flex" role="search" method="POST">
+          <input class="form-control me-2" type="search" name="srch" placeholder="Search by type" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
         </li>
       </ul>
     </div>

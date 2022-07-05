@@ -49,7 +49,8 @@ const adminProtect = asyncHandler(async (req: Request, res: Response, next: Next
     try {
       if (process.env.JWT_SECRET){
         await jwt.verify(token, process.env.JWT_SECRET);
-        if (req.cookies.Type === 'Admin') {
+        const user = await Model.find({_id: req.cookies.Uid})
+        if (req.cookies.Type === 'Admin' && user[0].Admin) {
           next();
         } 
       }

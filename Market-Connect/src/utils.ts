@@ -15,10 +15,10 @@ function newInput() {
 function updateInput() {
     return Joi.object({
         "imageUrl": Joi.string(),
-        "name": Joi.string().min(2),
+        "name": Joi.string(),
         "Quantity": Joi.number(),
         "Description": Joi.string(),
-        "price": Joi.number().integer(),
+        "price": Joi.number(),
         "size": Joi.string(),
         "type": Joi.string()
     })
@@ -38,7 +38,7 @@ function userInfo() {
 function userDetails() {
     return Joi.object({
         "email": Joi.string().email().required(),
-        "password": Joi.string().min(8).required(),
+        "password": Joi.string().required(),
     })
 }
 
