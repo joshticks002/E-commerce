@@ -4,21 +4,46 @@
 <body>
   <%- include("./partial/navbar.ejs") %>
 
+   <h1 class="text-center editp">Products</h1>
+
   <div class="blogs content">
-    <h1>Products</h1>
+   
 
     <% if (products.length > 0) { %>
       <% products.forEach(product => { %>
 
             
         <div class="m1-2 mb-1">
-          <img src="<%= product.imageUrl %>" alt="shoe/wears/accessories" class="photos">
-          <p>Name: <%= product.name %></p>
-          <p>Quantity: <%= product.Quantity %> in stock</p>
-          <p>Price: <%= product.price %></p>
-          <p>size: <%= product.size %></p>
-          <p>Type: <%= product.type %></p>
+          <img src="<%= product.imageUrl %>" alt="shoe/wears/accessories" class="photos dit">
+         
+          <div class="ditw">
+             <p><b>Name:</b> <%= product.name %></p>
+          <p> <b>Quantity:</b> <%= product.Quantity %> in stock</p>
+          <p><b>Price:</b> <%= product.price %></p>
+          <p><b>Size:</b> <%= product.size %></p>
+          <p><b>Type:</b> <%= product.type %></p>
+          </div>
         </div>
+
+
+
+
+
+<div class="accordion" id="accordionExample">
+     <div class="accordion-item">
+    <h2 class="accordion-header" id="headingOne">
+      <button class="accordion-button accordbtn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        Edit
+      </button>
+    </h2>
+    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        
+            <div class="container">
+              <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-5">
+
 
             <% if (Type === 'Admin') { %>
               <form action="/api/products/update/<%= product._id %>?_method=PUT" method="POST">
@@ -54,15 +79,28 @@
                       <option value="accessories">Accessories</option>
                   </select>
               </div>
-                  <button type="submit" class="btn btn-success">Edit product</button>
+                  <button type="submit" class="btn btn-success">Submit Update</button>
               </form>
 
+                </div>
+                <div class="col-md-3"></div>
+              </div>
+            </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+                <span>
               <form action="/api/products/<%= product._id %>?_method=DELETE" method="POST">
-                  <button type="submit" class="btn btn-danger">Delete Product</button>
-              </form>
+                  <button type="submit" class="btn btn-danger jj">Delete Product</button>
+              </form></span>
               
               <br/>
-              <a href="/api/products" class="btn btn-secondary">Go to Home</a>
+              <a href="/api/products" class="btn btn-secondary xx">Go to Home</a>
               <a href="/newproduct" class="btn btn-warning">Add new product</a>
             <% } %>
 

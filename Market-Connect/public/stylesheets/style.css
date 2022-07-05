@@ -233,3 +233,38 @@ padding: 20px;
     margin-top: 60px;
 
 }
+.editp{
+  margin-top: 40px;
+  font-weight: bolder;
+  color: rgb(2, 49, 2);
+}
+.dit{
+  margin: 20px auto;
+  width: 500px;
+  height: 300px;
+}
+.ditw{
+  margin-left: 70px;
+  margin-top: 40px;
+  font-size: 1rem;
+}
+.accordbtn{
+  background-color: rgb(185, 228, 185);
+  color: black;
+  border: 1px solid black;
+  border-radius: 4px;
+  font-size: 1.2rem;
+  margin-left: 60px;
+  padding:8px 30px;
+}
+.accordbtn:hover{
+  background-color: rgb(3, 47, 3);
+  color: rgb(247, 242, 242);
+}
+.xx{
+  margin-left: 40px;
+}
+.jj{
+  margin-left: 120px;
+  margin-top: 20px;
+}
