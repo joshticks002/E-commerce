@@ -175,7 +175,7 @@ footer{
 }
 .usethem{
   border: none;
-  box-shadow:0 0 10px rgb(70, 177, 16);
+  box-shadow:0 0 10px rgb(42, 121, 3);
   border-radius: 10px;
   padding: 50px;
   background-color: rgb(231, 243, 232);
@@ -198,4 +198,9 @@ padding: 20px;
 }
 .moveleft{
   margin-left: -140px;
+}
+.prodiv{
+  display: flex;
+  flex-wrap: wrap;
+  
 }
