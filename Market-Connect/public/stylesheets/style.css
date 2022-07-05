@@ -1,7 +1,7 @@
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   position: relative;
-  padding-bottom: 300px;
+  padding-bottom: 350px;
 }
 
 a {
@@ -174,10 +174,13 @@ footer{
   padding-bottom: 40px;
 }
 .usethem{
-  border: 2px solid black;
+  border: none;
+  box-shadow:0 0 10px rgb(42, 121, 3);
+  border-radius: 10px;
   padding: 50px;
-  margin-bottom: 50px;
   background-color: rgb(231, 243, 232);
+  width: 30%;
+  margin: 40px auto;
 }
 .yuse{
   font-size: 2rem;
