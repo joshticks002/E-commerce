@@ -5,7 +5,7 @@
   <%- include("./partial/navbar.ejs") %>
 
 
-    <h1>Products</h1>
+    <h1 class="market-prod">Products</h1>
   <div class="blogs contented">
     <% if (products.length > 0) { %>
       <% products.forEach(product => { %>
@@ -15,11 +15,15 @@
           <p>Quantity: <%= product.Quantity %> in stock</p>
           <p>Price: <%= product.price %></p>
           <p>size: <%= product.size %></p>
-          <h3 class="imp-header"><a href="/api/product/buy/<%= product._id %>">Buy</a></h3>
-
-          <% if (Type === 'Admin') { %>
-            <h3 class="imp-header"><a href="/api/products/edit/<%= product._id %>">Edit</a></h3>
-          <% } %>
+       
+          <div class="ebtn">
+              <h5 class="imp-header"><a href="/api/product/buy/<%= product._id %>">Buy</a></h5>
+              
+              
+              <% if (Type==='Admin' ) { %>
+                <h5 class="imp-header"><a href="/api/products/edit/<%= product._id %>">Edit</a></h5>
+                <% } %>
+          </div>
 
         </div>
 
@@ -27,12 +31,11 @@
     <% } else { %>
       <p>There are no products to display...</p>
     <% } %>
-
-    <br/>
-    <% if (Type === 'Admin') { %>
-    <a href="/newproduct" class="btn btn-warning addpb">Add new Product(s)</a>
-    <% } %>
   </div>
+    <br />
+    <% if (Type==='Admin' ) { %>
+      <a href="/newproduct" class="btn btn-warning addpb">Add new Product(s)</a>
+    <% } %>
 
   <%- include("./partial/footer.ejs") %>
 </body>

@@ -225,7 +225,22 @@ padding: 20px;
   margin-top: 20px;
   margin-left: 20px;
   font-weight: bold;
-  color: aqua;
+  border: none;
+  border-radius: 10px;
+  background-color: rgb(236, 241, 232);
+  padding: 8px 20px;
+}
+.imp-header a{
+ text-decoration: none;
+}
+.imp-header a:hover{
+  color: rgb(6, 66, 35);
+}
+
+.imp-header:hover {
+ border: 1px solid black;
+  box-shadow: 0 0 5px #000;
+  background-color: rgb(208, 237, 208);
 }
 .contented{
   display: flex;
@@ -251,7 +266,7 @@ padding: 20px;
 .accordbtn{
   background-color: rgb(185, 228, 185);
   color: black;
-  border: 1px solid black;
+  border: none;
   border-radius: 4px;
   font-size: 1.2rem;
   margin-left: 60px;
@@ -267,4 +282,14 @@ padding: 20px;
 .jj{
   margin-left: 120px;
   margin-top: 20px;
+}
+.ebtn{
+  display: flex;
+  flex-direction: row;
+  
+}
+.market-prod{
+  text-align: center;
+  margin-top: 40px;
+  font-weight: bolder;
 }
