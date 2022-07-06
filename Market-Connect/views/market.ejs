@@ -15,23 +15,32 @@
           <p>Quantity: <%= product.Quantity %> in stock</p>
           <p>Price: <%= product.price %></p>
           <p>size: <%= product.size %></p>
-       
-          <div class="ebtn">
-              <h5 class="imp-header"><a href="/api/product/buy/<%= product._id %>">Buy</a></h5>
-              
-              
-              <% if (Type==='Admin' ) { %>
-                <h5 class="imp-header"><a href="/api/products/edit/<%= product._id %>">Edit</a></h5>
-                <% } %>
+          <% if (Type === "User") { %>
+            <form action="/api/products/cart/<%= product._id %>" method="POST">
+              <input type="hidden" name="name" value="<%= product._id %>" />
+              <label for="Quantity">Quantity</label>
+              <input type="number" name="Quantity" class="Quantity" />
+              <input type="submit" value="Add To Cart" />
+            </form>
+            <% } %> <% if (Type === "Agent") { %>
+            <form
+              action="/api/products/cart/<%= product._id %>"
+              method="post"
+            >
+              <input type="hidden" name="name" value="<%= product._id %>" />
+              <label for="Quantity">Quantity</label>
+              <input type="number" name="Quantity" class="Quantity" />
+              <input type="submit" value="Add To Products" />
+            </form>
+            <% } %> <% if (Type === 'Admin') { %>
+            <h3><a class="imp-header" href="/api/products/edit/<%= product._id %>">Edit</a></h3>
+            <% } %>
           </div>
-
-        </div>
-
-      <% }) %>
-    <% } else { %>
-      <p>There are no products to display...</p>
-    <% } %>
-  </div>
+    
+          <% }) %> <% } else { %>
+          <p>There are no products to display...</p>
+          <% } %>
+    </div>
     <br />
     <% if (Type==='Admin' ) { %>
       <a href="/newproduct" class="btn btn-warning addpb">Add new Product(s)</a>
