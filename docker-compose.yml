@@ -1,0 +1,13 @@
+version: '3.9'
+
+services:
+  mynodeapp:
+  api:
+    build: .
+    ports:
+      - 4000:5005
+    environment:
+      NODE_ENV: development
+      PORT: 5005
+      MONGO_URI: mongodb+srv://joshticks002:twmjtgma012@joshcluster.c3txfxk.mongodb.net/Resource?retryWrites=true&w=majority
+      JWT_SECRET: abc123
