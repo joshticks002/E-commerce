@@ -139,16 +139,24 @@ a {
     font-weight: bolder;
 }
 
-footer{
+.footer{
   width: 100%;
   color: white;
-  background-color: rgb(1, 62, 1);
   padding-top: 40px;
   border-top-left-radius: 0.6em;
   border-top-right-radius: 0.6em;
-  bottom: 0;
-  position:absolute;
+  margin-top: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding-bottom: 40px;
+
 }
+footer{
+ background-color: rgb(1, 62, 1);
+}
+
+
 #des{
   color: rgb(9, 9, 232);
 }
@@ -233,6 +241,14 @@ padding: 20px;
   margin-left: 20px;
   line-height: 0.7;
 }
+.img-para{
+  border: 1px thin black;
+  padding: 6px;
+  border-radius: 5px;
+  background-color: rgb(231, 227, 214);
+  margin: 7px;
+}
+
 .imp-header{
   margin-top: 20px;
   margin-left: 20px;
@@ -246,13 +262,12 @@ padding: 20px;
  text-decoration: none;
 }
 .imp-header a:hover{
-  color: rgb(6, 66, 35);
+  color: rgb(235, 235, 232);
 }
 
 .imp-header:hover {
- border: 1px solid black;
-  box-shadow: 0 0 5px #000;
-  background-color: rgb(208, 237, 208);
+ border: 1px solid rgb(249, 248, 248);
+  background-color: rgb(176, 176, 171);
 }
 .contented{
   display: flex;
@@ -261,6 +276,12 @@ padding: 20px;
     padding-left: 10px;
     padding-right: 10px;
 
+}
+
+.nav-item{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .editp{
   margin-top: 40px;

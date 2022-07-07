@@ -21,8 +21,8 @@
         <form action="/api/products/cart/<%= product._id %>" method="POST">
           <input type="hidden" name="name" value="<%= product._id %>" />
           <label for="Quantity" class="textsuc" style="font-size: 0.6rem">Qty</label>
-          <input type="number" name="Quantity" class="Quantity" />
-          <input type="submit" class="addproductw" value="Add To Cart" />
+          <input type="number" name="Quantity" min="1" max="<%= product.Quantity %>" class="Quantity" required />
+          <input type="submit" class="addproductw btn btn-success" value="Add To Cart" />
         </form>
         <% } %> <% if (Type === "Agent") { %>
         <form action="/api/products/cart/<%= product._id %>" method="post">
@@ -30,8 +30,8 @@
           <label for="Quantity" class="textsuc" style="font-size: 0.6rem"
             >Qty</label
           >
-          <input type="number" name="Quantity" class="Quantity" />
-          <input type="submit" class="addproductw" value="Add To Products" />
+          <input type="number" id="Aqty" name="Quantity" min="1" max="<%= product.Quantity %>" class="Quantity" required />
+          <input type="submit" id="Agentqty" class="addproductw btn btn-success" value="Add To Products" />
         </form>
         <% } %> <% if (Type === 'Admin') { %>
         <h6>

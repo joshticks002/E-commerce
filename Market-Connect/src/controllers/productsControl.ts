@@ -29,7 +29,7 @@ const addToCart = asyncHandler(async (req: Request, res: Response) => {
       const productPrice = Number(price.split("$")[1]);
       const discount = Number(price.split("$")[1]) * Quantity * 0.15;
       const actualPrice =
-        user.User === true ? productPrice * Quantity : (productPrice * Quantity) - discount;
+        user.User === true ? (productPrice * Quantity) : (productPrice * Quantity) - discount;
 
       const cart = {
         imageUrl: productSelected[0].imageUrl,
@@ -53,7 +53,7 @@ const addToCart = asyncHandler(async (req: Request, res: Response) => {
           { Uid: userId },
           {
             $push: {
-              products: cart,
+              cart: cart,
             },
           }
         );
@@ -163,7 +163,6 @@ const updateProduct = asyncHandler(
       const body: Product = req.body;
 
       const theProduct = await Products.findById(id);
-      console.log(theProduct);
       const input = {
         imageUrl: body.imageUrl || theProduct.imageUrl,
         name: body.name || theProduct.name,

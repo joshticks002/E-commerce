@@ -5,6 +5,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const asyncHandler = require("express-async-handler");
 const { userInfo, userDetails } = require("../utils");
+const Products = require("../models/products");
+
 
 const generateToken = (id: string) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -21,6 +23,34 @@ const getUsers = asyncHandler(async (req: Request, res: Response) => {
   res.status(201).render("usersInfo", {
     title: "Users Info",
     users: [...filtered],
+    token: req.cookies.Token,
+    uid: req.cookies.Uid,
+    user: req.cookies.Username,
+    Type: req.cookies.Type,
+  });
+});
+
+const getAgentItems = asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.cookies.Uid;
+  const agent = await Viewable.find({ Uid: userId});
+  
+  res.status(201).render("agentsProduct", {
+    title: "Your Products ",
+    products: [...agent[0].products],
+    token: req.cookies.Token,
+    uid: req.cookies.Uid,
+    user: req.cookies.Username,
+    Type: req.cookies.Type,
+  });
+});
+
+const getTransactions = asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.cookies.Uid;
+  const user = await Viewable.find({ Uid: userId});
+  
+  res.status(201).render("orders", {
+    title: "Your Orders",
+    orders: [...user[0].prevTransactions],
     token: req.cookies.Token,
     uid: req.cookies.Uid,
     user: req.cookies.Username,
@@ -46,14 +76,14 @@ const getCartItems = asyncHandler(async (req: Request, res: Response) => {
       Type: req.cookies.Type,
     });
   } else {
-    const total = user[0].products.reduce(
+    const total = user[0].cart.reduce(
       (acc: number, curr: AgentProduct) => acc + curr["Total Price"],
       0
     );
     res.status(201).render("cartProduct", {
       title: "Cart",
       total: total,
-      products: [...user[0].products],
+      products: [...user[0].cart],
       token: req.cookies.Token,
       uid: req.cookies.Uid,
       user: req.cookies.Username,
@@ -93,10 +123,10 @@ const deleteCartProduct = asyncHandler(async (req: Request, res: Response) => {
       Type: req.cookies.Type || "none",
     });
   } else if (user[0].Agent) {
-    const foundCart = user[0].products.filter(
+    const foundCart = user[0].cart.filter(
       (prd: Cart) => JSON.stringify(prd.Name) !== JSON.stringify(req.body.name)
     );
-    user[0].products = [];
+    user[0].cart = [];
     const total = foundCart.reduce(
       (acc: number, curr: Cart) => acc + curr["Total Price"],
       0
@@ -105,7 +135,7 @@ const deleteCartProduct = asyncHandler(async (req: Request, res: Response) => {
     await Viewable.updateOne(
       { Uid: userId },
       {
-        products: foundCart || [],
+        cart: foundCart || [],
       }
     );
 
@@ -146,7 +176,7 @@ const deleteAllCartProduct = asyncHandler(
       const updateUserCart = await Viewable.updateOne(
         { Uid: userId },
         {
-          products: [],
+          cart: [],
         }
       );
       res.status(201).render("agentsProduct", {
@@ -165,7 +195,72 @@ const deleteAllCartProduct = asyncHandler(
 const clearCart = asyncHandler(async (req: Request, res: Response) => {
   const userId = req.cookies.Uid;
   const user = await Viewable.find({ Uid: userId });
+  let prdName = ""
   const ref = req.params.ref;
+  if (user[0].Agent) {
+    user[0].cart.forEach(
+      async (cart: Cart) =>
+        await Viewable.updateOne(
+          { Uid: userId },
+          {
+            $push: {
+              prevTransactions: `Your transaction with Reference(${ref}), name: ${cart.Name},price: ${cart.Price}, quantity: ${cart.Quantity}`,
+            },
+          }
+        )
+    );
+
+    user[0].cart.forEach(
+      async (cart: Cart) =>
+        await Viewable.updateOne(
+          { Uid: userId },
+          {
+            $push: {
+              products: {imageUrl: cart.imageUrl,
+              name: cart.Name,
+              Quantity: cart.Quantity,
+              price: Math.floor(Number(cart.Price.split('$')[1]) * (Math.random() + 1))
+              }
+            },
+          }
+        )
+    );
+
+    user[0].cart.forEach(
+      async (cart: Cart) =>
+        {const theProduct = await Products.find({ name: cart.Name })
+        const input = {
+          imageUrl: theProduct[0].imageUrl,
+          name: theProduct[0].name,
+          Quantity: theProduct[0].Quantity - cart.Quantity,
+          Description: theProduct[0].Description,
+          price: theProduct[0].price,
+          size: theProduct[0].size,
+          type: theProduct[0].type,
+          "Amount Earned": theProduct["Amount Earned"],
+        };
+  
+        const updInput = await Products.findByIdAndUpdate(theProduct[0]._id, input, {
+          new: true,
+        });
+    });
+  
+    await Viewable.updateOne(
+      { Uid: userId },
+      {
+        cart: [],
+      }
+    );
+    res.status(201).render("cartProduct", {
+      title: "Cart",
+      products: [],
+      total: null,
+      token: req.cookies.Token,
+      uid: req.cookies.Uid,
+      user: req.cookies.Username,
+      Type: req.cookies.Type || "none",
+    });
+  } else {
 
   user[0].cart.forEach(
     async (cart: Cart) =>
@@ -179,6 +274,25 @@ const clearCart = asyncHandler(async (req: Request, res: Response) => {
       )
   );
 
+  user[0].cart.forEach(
+    async (cart: Cart) =>
+      {const theProduct = await Products.find({ name: cart.Name })
+      const input = {
+        imageUrl: theProduct[0].imageUrl,
+        name: theProduct[0].name,
+        Quantity: theProduct[0].Quantity - cart.Quantity,
+        Description: theProduct[0].Description,
+        price: theProduct[0].price,
+        size: theProduct[0].size,
+        type: theProduct[0].type,
+        "Amount Earned": theProduct["Amount Earned"],
+      };
+
+      const updInput = await Products.findByIdAndUpdate(theProduct[0]._id, input, {
+        new: true,
+      });
+  });
+
   const updateUserTransaction = await Viewable.updateOne(
     { Uid: userId },
     {
@@ -186,7 +300,6 @@ const clearCart = asyncHandler(async (req: Request, res: Response) => {
     }
   );
 
-  console.log(updateUserTransaction);
   res.status(201).render("cartProduct", {
     title: "Cart",
     products: [],
@@ -196,6 +309,7 @@ const clearCart = asyncHandler(async (req: Request, res: Response) => {
     user: req.cookies.Username,
     Type: req.cookies.Type || "none",
   });
+}
 });
 
 const buyProducts = asyncHandler(async (req: Request, res: Response) => {
@@ -211,7 +325,7 @@ const buyProducts = asyncHandler(async (req: Request, res: Response) => {
 });
 
 const getAgents = asyncHandler(async (req: Request, res: Response) => {
-  const allAgents = await Model.find();
+  const allAgents = await Viewable.find();
   const filtered = allAgents.filter(
     (user: { Agent: boolean }) => user.Agent === true
   );
@@ -382,4 +496,6 @@ module.exports = {
   deleteAllCartProduct,
   buyProducts,
   clearCart,
+  getAgentItems,
+  getTransactions
 };
