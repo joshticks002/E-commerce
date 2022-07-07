@@ -1,5 +1,3 @@
-import { array } from "joi";
-
 const user = require("mongoose");
 
 const userSchema = user.Schema({
@@ -29,7 +27,15 @@ const userSchema = user.Schema({
     required: [true, "Products must have at least one item"],
   },
   cart: {
-    type: Array,
+    type: [
+      {
+        imageUrl: String,
+        Name: String,
+        Quantity: Number,
+        Price: String,
+        "Total Price": Number,
+      },
+    ],
     required: [true, "Save to Cart"],
   },
   prevTransactions: {

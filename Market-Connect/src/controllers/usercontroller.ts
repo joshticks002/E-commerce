@@ -13,20 +13,201 @@ const generateToken = (id: string) => {
 };
 
 const getUsers = asyncHandler(async (req: Request, res: Response) => {
-  const allUsers = await Model.find();
+  const allUsers = await Viewable.find();
   const filtered = allUsers.filter(
     (user: { User: boolean }) => user.User === true
   );
-  res
-    .status(201)
-    .render("usersInfo", {
-      title: "Users Info",
-      users: [...filtered],
+  console.log(filtered)
+  res.status(201).render("usersInfo", {
+    title: "Users Info",
+    users: [...filtered],
+    token: req.cookies.Token,
+    uid: req.cookies.Uid,
+    user: req.cookies.Username,
+    Type: req.cookies.Type,
+  });
+});
+
+const getCartItems = asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.cookies.Uid;
+  const user = await Viewable.find({ Uid: userId });
+  if (user[0].User) {
+    const total = user[0].cart.reduce(
+      (acc: number, curr: Cart) => acc + curr["Total Price"],
+      0
+    );
+    res.status(201).render("cartProduct", {
+      title: "Cart",
+      total: total,
+      products: [...user[0].cart],
       token: req.cookies.Token,
       uid: req.cookies.Uid,
       user: req.cookies.Username,
       Type: req.cookies.Type,
     });
+  } else {
+    const total = user[0].products.reduce(
+      (acc: number, curr: AgentProduct) => acc + curr["Total Price"],
+      0
+    );
+    res.status(201).render("cartProduct", {
+      title: "Cart",
+      total: total,
+      products: [...user[0].products],
+      token: req.cookies.Token,
+      uid: req.cookies.Uid,
+      user: req.cookies.Username,
+      Type: req.cookies.Type,
+    });
+  }
+});
+
+const deleteCartProduct = asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.cookies.Uid;
+  const user = await Viewable.find({ Uid: userId });
+
+  if (user[0].User) {
+    const foundCart = user[0].cart.filter(
+      (prd: Cart) => JSON.stringify(prd._id) !== JSON.stringify(req.body.id)
+    );
+
+    user[0].cart = [];
+    const total = foundCart.reduce(
+      (acc: number, curr: Cart) => acc + curr["Total Price"],
+      0
+    );
+    await Viewable.updateOne(
+      { Uid: userId },
+      {
+        cart: foundCart || [],
+      }
+    );
+
+    res.status(201).render("cartProduct", {
+      title: "Cart",
+      products: [...foundCart],
+      total: total,
+      token: req.cookies.Token,
+      uid: req.cookies.Uid,
+      user: req.cookies.Username,
+      Type: req.cookies.Type || "none",
+    });
+  } else if (user[0].Agent) {
+    const foundCart = user[0].products.filter(
+      (prd: Cart) => JSON.stringify(prd.Name) !== JSON.stringify(req.body.name)
+    );
+    user[0].products = [];
+    const total = foundCart.reduce(
+      (acc: number, curr: Cart) => acc + curr["Total Price"],
+      0
+    );
+    
+    await Viewable.updateOne(
+      { Uid: userId },
+      {
+        products: foundCart || [],
+      }
+    );
+
+    res.status(201).render("cartProduct", {
+      title: "Products",
+      products: [...foundCart],
+      total: total,
+      token: req.cookies.Token,
+      uid: req.cookies.Uid,
+      user: req.cookies.Username,
+      Type: req.cookies.Type || "none",
+    });
+  }
+});
+
+const deleteAllCartProduct = asyncHandler(
+  async (req: Request, res: Response) => {
+    const userId = req.cookies.Uid;
+    const user = await Viewable.find({ Uid: userId });
+
+    if (user[0].User) {
+      const updateUserCart = await Viewable.updateOne(
+        { Uid: userId },
+        {
+          cart: [],
+        }
+      );
+      res.status(201).render("cartProduct", {
+        title: "Cart",
+        products: [],
+        total: null,
+        token: req.cookies.Token,
+        uid: req.cookies.Uid,
+        user: req.cookies.Username,
+        Type: req.cookies.Type || "none",
+      });
+    } else {
+      const updateUserCart = await Viewable.updateOne(
+        { Uid: userId },
+        {
+          products: [],
+        }
+      );
+      res.status(201).render("agentsProduct", {
+        title: "Products",
+        products: [],
+        total: null,
+        token: req.cookies.Token,
+        uid: req.cookies.Uid,
+        user: req.cookies.Username,
+        Type: req.cookies.Type || "none",
+      });
+    }
+  }
+);
+
+const clearCart = asyncHandler(async (req: Request, res: Response) => {
+  const userId = req.cookies.Uid;
+  const user = await Viewable.find({ Uid: userId });
+  const ref = req.params.ref;
+
+  user[0].cart.forEach(
+    async (cart: Cart) =>
+      await Viewable.updateOne(
+        { Uid: userId },
+        {
+          $push: {
+            prevTransactions: `Your transaction with Reference(${ref}), name: ${cart.Name},price: ${cart.Price}, quantity: ${cart.Quantity}`,
+          },
+        }
+      )
+  );
+
+  const updateUserTransaction = await Viewable.updateOne(
+    { Uid: userId },
+    {
+      cart: [],
+    }
+  );
+
+  console.log(updateUserTransaction);
+  res.status(201).render("cartProduct", {
+    title: "Cart",
+    products: [],
+    total: null,
+    token: req.cookies.Token,
+    uid: req.cookies.Uid,
+    user: req.cookies.Username,
+    Type: req.cookies.Type || "none",
+  });
+});
+
+const buyProducts = asyncHandler(async (req: Request, res: Response) => {
+  const total = req.body.total;
+  res.status(201).render("purchase", {
+    title: "Checkout",
+    total: total,
+    token: req.cookies.Token,
+    uid: req.cookies.Uid,
+    user: req.cookies.Username,
+    Type: req.cookies.Type,
+  });
 });
 
 const getAgents = asyncHandler(async (req: Request, res: Response) => {
@@ -34,16 +215,14 @@ const getAgents = asyncHandler(async (req: Request, res: Response) => {
   const filtered = allAgents.filter(
     (user: { Agent: boolean }) => user.Agent === true
   );
-  res
-    .status(201)
-    .render("agentInfo", {
-      title: "Agents Info",
-      users: [...filtered],
-      token: req.cookies.Token,
-      uid: req.cookies.Uid,
-      user: req.cookies.Username,
-      Type: req.cookies.Type,
-    });
+  res.status(201).render("agentInfo", {
+    title: "Agents Info",
+    users: [...filtered],
+    token: req.cookies.Token,
+    uid: req.cookies.Uid,
+    user: req.cookies.Username,
+    Type: req.cookies.Type,
+  });
 });
 
 const registerUser = asyncHandler(async (req: Request, res: Response) => {
@@ -198,4 +377,9 @@ module.exports = {
   logoutUser,
   getUsers,
   getAgents,
+  getCartItems,
+  deleteCartProduct,
+  deleteAllCartProduct,
+  buyProducts,
+  clearCart,
 };

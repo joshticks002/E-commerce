@@ -1,8 +1,20 @@
 body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: "Lucida Grande", Helvetica, Arial, sans-serif;
   position: relative;
   padding-bottom: 350px;
 }
+@media screen and (max-width: 767px) {
+  body {
+    padding-bottom: 1000px;
+  }
+}
+
+.navbar-toggler-icon, .navbar-toggler{  
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255, 0.7)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+  border-color: black;
+  color: #000;
+}
+
 
 a {
   color: black;
@@ -188,7 +200,7 @@ footer{
   text-align: center;
   margin: 40px;
 }
-.addpb{
+.addpb, .purch{
   margin: 40px ;
   font-weight: bold;
 }
@@ -219,7 +231,7 @@ padding: 20px;
   font-family: Georgia, 'Times New Roman', Times, serif;
   color: rgb(2, 49, 2);
   margin-left: 20px;
-  padding-bottom: -50px;
+  line-height: 0.7;
 }
 .imp-header{
   margin-top: 20px;
@@ -246,6 +258,8 @@ padding: 20px;
   display: flex;
     flex-wrap: wrap;
     margin-top: 60px;
+    padding-left: 10px;
+    padding-right: 10px;
 
 }
 .editp{
@@ -292,4 +306,84 @@ padding: 20px;
   text-align: center;
   margin-top: 40px;
   font-weight: bolder;
+}
+.prodiv{
+  display: flex;
+  flex-wrap: wrap;
+}
+.paynow{
+  margin-top: 40px;
+  font-weight: bold;
+  color: rgb(5, 31, 5);
+  padding: 60px 30px;
+  border: 1px solid rgb(97, 199, 97);
+  box-shadow: 0 0 4px rgb(97, 199, 97);
+  background-color: rgb(238, 238, 238);
+  border-radius: 5px;
+  font-size: 1rem;
+}
+.paynow label{
+  padding-right: 6px;
+}
+.paynow input{
+ width: 65%;
+ height: 35px;
+ border-radius: 8px;
+ box-shadow: none;
+}
+.paynow button{
+  width: 30%;
+  height: 35px;
+  border-radius: 8px;
+  box-shadow: none;
+  background-color: rgb(42, 152, 42);
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  text-align: center;
+  margin-left:170px;
+  margin-top: 40px;
+} 
+.paynow button:hover{
+  background-color: rgb(243, 248, 243);
+  color: rgb(22, 140, 91);
+}
+.checkoutword{
+font-size: 1.2rem;
+  margin-left: 520px;
+  font-weight: bolder;
+}
+.successm{
+  font-size: 1.2rem;
+  font-weight: bolder;
+  margin-top: 150px;
+}
+.Quantity{
+  margin-left: 2px;
+   margin-right: 2px;
+  width: 50px;
+}
+.textsuc{
+  font-size: 0.6rem !important;
+  margin-left: 10px;
+}
+.addproductw{
+  font-size: 0.6rem !important;
+  background-color: rgb(47, 145, 47);
+}
+.paymoney, .removeitem{
+  font-weight: bolder;
+  color: rgb(5, 31, 5);
+  padding: 6px 30px;
+  border: 0.5px solid rgb(97, 199, 97);
+  box-shadow: 0 0 4px rgb(97, 199, 97);
+  background-color: rgb(238, 238, 238);
+  border-radius: 5px;
+  font-size: 1rem;
+  margin-right: 60px;
+  margin-bottom: 30px;
+}
+.paymoney:hover, .removeitem:hover{
+  background-color: rgb(3, 47, 3);
+  color: rgb(247, 242, 242);
 }

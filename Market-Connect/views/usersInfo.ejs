@@ -19,10 +19,7 @@
            <div><h5 class="trans"><b>Previous Transaction</b></h5>
             <% if (usr.prevTransactions.length > 0) { %>
                 <% usr.prevTransactions.forEach(trans => { %>
-                    <p>Order: <%= trans.prdName %></p>
-                    <p>Quantity: <%= trans.quantity %></p>
-                    <p>Price: <%= trans.price %></p>
-                    <p>Time: <%= trans.timeOfTrans %></p>
+                    <p>Order: <%= trans %></p>
                 <% }) %>
             <% } else { %>
                 <p>No previous transaction</p>

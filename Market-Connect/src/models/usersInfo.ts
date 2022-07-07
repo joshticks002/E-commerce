@@ -23,7 +23,15 @@ const usersSchema = usersBasicData.Schema({
     required: [true, "Products must have at least one item"],
   },
   cart: {
-    type: Array,
+    type: [
+      {
+        imageUrl: String,
+        Name: String,
+        Quantity: Number,
+        Price: String,
+        "Total Price": Number,
+      },
+    ],
     required: [true, "Save to Cart"],
   },
   prevTransactions: {
