@@ -4,6 +4,17 @@ import { Request, Response, NextFunction } from "express";
 const { protect, adminProtect } = require('../middlewares/auth')
 const { getProducts, getProductById } = require('../controllers/productsControl')
 
+
+router.get("/", (req: Request, res: Response) => {
+  res.status(201).render("index", {
+    title: "Home",
+    token: req.cookies.Token,
+    uid: req.cookies.Uid,
+    user: req.cookies.Username,
+    Type: req.cookies.Type || "none",
+  });
+});
+
 router.get("/home", (req: Request, res: Response) => {
   res.status(201).render("index", {
     title: "Home",

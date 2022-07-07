@@ -4,6 +4,15 @@ var express = require("express");
 var router = express.Router();
 const { protect, adminProtect } = require('../middlewares/auth');
 const { getProducts, getProductById } = require('../controllers/productsControl');
+router.get("/", (req, res) => {
+    res.status(201).render("index", {
+        title: "Home",
+        token: req.cookies.Token,
+        uid: req.cookies.Uid,
+        user: req.cookies.Username,
+        Type: req.cookies.Type || "none",
+    });
+});
 router.get("/home", (req, res) => {
     res.status(201).render("index", {
         title: "Home",
