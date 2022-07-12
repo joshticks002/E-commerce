@@ -246,7 +246,7 @@ padding: 20px;
   padding: 6px;
   border-radius: 5px;
   background-color: rgb(231, 227, 214);
-  margin: 7px;
+  margin: 17px 7px;
 }
 
 .imp-header{
@@ -271,10 +271,11 @@ padding: 20px;
 }
 .contented{
   display: flex;
-    flex-wrap: wrap;
-    margin-top: 60px;
-    padding-left: 10px;
-    padding-right: 10px;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  margin-top: 60px;
+  padding-left: 10px;
+  padding-right: 10px;
 
 }
 
