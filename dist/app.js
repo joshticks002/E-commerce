@@ -5,7 +5,7 @@ const path = require('path');
 const methodOverride = require('method-override');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const dotenv = require('dotenv').config();
+require('dotenv').config();
 const { connectDB } = require('./mongoose/db');
 connectDB();
 const { errorHandler } = require('./middlewares/errorHandler');
