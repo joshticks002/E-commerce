@@ -25,7 +25,7 @@
           <% }) %>
     </div>
         <% } else { %>
-        <p class="checkoutword">There are no products to display in cart...</p>
+        <p class="alert alert-secondary mb-3 ml-4">There are no products to display in cart...</p>
     <% } %>
     <br />
     <% if (total && uid) { %>
@@ -39,7 +39,8 @@
             <input type="submit" value="Remove all items" class="btn btn-danger mb-3 ml-3" />
         </form>
       <% } %>
+      </div>
 
-  <%- include("./partial/footer.ejs") %>
+    <%- include("./partial/footer.ejs") %>
 </body>
 </html>
