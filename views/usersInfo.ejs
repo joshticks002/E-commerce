@@ -22,14 +22,14 @@
                     <p>Order: <%= trans %></p>
                 <% }) %>
             <% } else { %>
-                <p>No previous transaction</p>
+                <p class="alert alert-success mb-3 ml-4">No previous transaction</p>
             <% } %>
            </div>
         </div>
 
       <% }) %>
     <% } else { %>
-      <p>There is no user to display...</p>
+      <p class="alert alert-success mb-3 ml-4">There is no user to display...</p>
     <% } %>
   </div>
 
