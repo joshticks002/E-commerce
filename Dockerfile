@@ -1,6 +1,6 @@
 FROM node:16.15.0
 
-WORKDIR /Users/decagon/Desktop/Assignment/week-8-node-sq011a-group1-group-1-market-connect/Market-Connect
+WORKDIR /Users/decagon/Desktop/Assignment/E-commerce
 
 COPY package.json ./
 
