@@ -2,12 +2,15 @@ body {
   font: "Lucida Grande", Helvetica, Arial, sans-serif;
   position: relative;
   padding-bottom: 350px;
-  min-height: 90vh;
 }
 @media screen and (max-width: 767px) {
   body {
     padding-bottom: 1000px;
   }
+}
+
+.my-body-container {
+  min-height: 90vh;
 }
 
 .navbar-toggler-icon,
@@ -148,8 +151,7 @@ a {
   flex-direction: row;
   justify-content: space-around;
   bottom: 0;
-  /* position: fixed; */
-  padding-bottom: 40px;
+  padding-bottom: 20px;
 }
 footer {
   background-color: rgb(1, 62, 1);
@@ -270,7 +272,7 @@ footer {
 }
 .contented {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: left;
   flex-wrap: wrap;
   margin-top: 60px;
   padding-left: 10px;
