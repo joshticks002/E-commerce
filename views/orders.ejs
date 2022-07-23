@@ -7,8 +7,8 @@
     <div class="blogs prodiv">
       <% if (orders.length > 0) { %> <% orders.forEach(order => { %>
       <div class="m1-2 mb-1 img-para">
-        <h6><b>Reference:</b> <%= order.reference %></h6>
-        <h6><b>Name:</b> <%= order.name %></h6>
+        <h6><b>Transaction reference:</b> <%= order.reference %></h6>
+        <h6><b>Product name:</b> <%= order.name %></h6>
         <h6><b>Price:</b> <%= order.price %></h6>
         <h6><b>Quantity:</b> <%= order.quantity %></h6>
         <div class="col-md-6 newprod mb-3">
@@ -21,7 +21,7 @@
                 required
               />
             </div>
-            <button type="submit" class="btn btn-primary">Add review</button>
+            <button type="submit" class="btn btn-primary">Review</button>
           </form>
         </div>
       </div>
