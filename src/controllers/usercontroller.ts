@@ -7,7 +7,6 @@ const asyncHandler = require("express-async-handler");
 const { userInfo, userDetails } = require("../utils");
 const Products = require("../models/products");
 
-
 const generateToken = (id: string) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: "3d",
@@ -19,7 +18,7 @@ const getUsers = asyncHandler(async (req: Request, res: Response) => {
   const filtered = allUsers.filter(
     (user: { User: boolean }) => user.User === true
   );
-  console.log(filtered)
+  console.log(filtered);
   res.status(201).render("usersInfo", {
     title: "Users Info",
     users: [...filtered],
@@ -32,8 +31,8 @@ const getUsers = asyncHandler(async (req: Request, res: Response) => {
 
 const getAgentItems = asyncHandler(async (req: Request, res: Response) => {
   const userId = req.cookies.Uid;
-  const agent = await Viewable.find({ Uid: userId});
-  
+  const agent = await Viewable.find({ Uid: userId });
+
   res.status(201).render("agentsProduct", {
     title: "Your Products ",
     products: [...agent[0].products],
@@ -44,10 +43,27 @@ const getAgentItems = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
+const banAgent = asyncHandler(async (req: Request, res: Response) => {
+  const { email, banned } = req.body;
+  await Model.updateOne(
+    { email: email.toLowerCase() },
+    {
+      isBanned: banned,
+    }
+  );
+  await Viewable.updateOne(
+    { email: email.toLowerCase() },
+    {
+      isBanned: banned,
+    }
+  );
+  res.status(201).redirect("/users/agents");
+});
+
 const getTransactions = asyncHandler(async (req: Request, res: Response) => {
   const userId = req.cookies.Uid;
-  const user = await Viewable.find({ Uid: userId});
-  
+  const user = await Viewable.find({ Uid: userId });
+
   res.status(201).render("orders", {
     title: "Your Orders",
     orders: [...user[0].prevTransactions],
@@ -131,7 +147,7 @@ const deleteCartProduct = asyncHandler(async (req: Request, res: Response) => {
       (acc: number, curr: Cart) => acc + curr["Total Price"],
       0
     );
-    
+
     await Viewable.updateOne(
       { Uid: userId },
       {
@@ -195,7 +211,7 @@ const deleteAllCartProduct = asyncHandler(
 const clearCart = asyncHandler(async (req: Request, res: Response) => {
   const userId = req.cookies.Uid;
   const user = await Viewable.find({ Uid: userId });
-  let prdName = ""
+  let prdName = "";
   const ref = req.params.ref;
   if (user[0].Agent) {
     user[0].cart.forEach(
@@ -216,35 +232,41 @@ const clearCart = asyncHandler(async (req: Request, res: Response) => {
           { Uid: userId },
           {
             $push: {
-              products: {imageUrl: cart.imageUrl,
-              name: cart.Name,
-              Quantity: cart.Quantity,
-              price: Math.floor(Number(cart.Price.split('$')[1]) * (Math.random() + 1))
-              }
+              products: {
+                imageUrl: cart.imageUrl,
+                name: cart.Name,
+                Quantity: cart.Quantity,
+                price: Math.floor(
+                  Number(cart.Price.split("$")[1]) * (Math.random() + 1)
+                ),
+              },
             },
           }
         )
     );
 
-    user[0].cart.forEach(
-      async (cart: Cart) =>
-        {const theProduct = await Products.find({ name: cart.Name })
-        const input = {
-          imageUrl: theProduct[0].imageUrl,
-          name: theProduct[0].name,
-          Quantity: theProduct[0].Quantity - cart.Quantity,
-          Description: theProduct[0].Description,
-          price: theProduct[0].price,
-          size: theProduct[0].size,
-          type: theProduct[0].type,
-          "Amount Earned": theProduct["Amount Earned"],
-        };
-  
-        const updInput = await Products.findByIdAndUpdate(theProduct[0]._id, input, {
+    user[0].cart.forEach(async (cart: Cart) => {
+      const theProduct = await Products.find({ name: cart.Name });
+      const input = {
+        imageUrl: theProduct[0].imageUrl,
+        name: theProduct[0].name,
+        Quantity: theProduct[0].Quantity - cart.Quantity,
+        Description: theProduct[0].Description,
+        price: theProduct[0].price,
+        size: theProduct[0].size,
+        type: theProduct[0].type,
+        "Amount Earned": theProduct["Amount Earned"],
+      };
+
+      const updInput = await Products.findByIdAndUpdate(
+        theProduct[0]._id,
+        input,
+        {
           new: true,
-        });
+        }
+      );
     });
-  
+
     await Viewable.updateOne(
       { Uid: userId },
       {
@@ -261,22 +283,20 @@ const clearCart = asyncHandler(async (req: Request, res: Response) => {
       Type: req.cookies.Type || "none",
     });
   } else {
+    user[0].cart.forEach(
+      async (cart: Cart) =>
+        await Viewable.updateOne(
+          { Uid: userId },
+          {
+            $push: {
+              prevTransactions: `Your transaction with Reference(${ref}), name: ${cart.Name},price: ${cart.Price}, quantity: ${cart.Quantity}`,
+            },
+          }
+        )
+    );
 
-  user[0].cart.forEach(
-    async (cart: Cart) =>
-      await Viewable.updateOne(
-        { Uid: userId },
-        {
-          $push: {
-            prevTransactions: `Your transaction with Reference(${ref}), name: ${cart.Name},price: ${cart.Price}, quantity: ${cart.Quantity}`,
-          },
-        }
-      )
-  );
-
-  user[0].cart.forEach(
-    async (cart: Cart) =>
-      {const theProduct = await Products.find({ name: cart.Name })
+    user[0].cart.forEach(async (cart: Cart) => {
+      const theProduct = await Products.find({ name: cart.Name });
       const input = {
         imageUrl: theProduct[0].imageUrl,
         name: theProduct[0].name,
@@ -288,28 +308,32 @@ const clearCart = asyncHandler(async (req: Request, res: Response) => {
         "Amount Earned": theProduct["Amount Earned"],
       };
 
-      const updInput = await Products.findByIdAndUpdate(theProduct[0]._id, input, {
-        new: true,
-      });
-  });
+      const updInput = await Products.findByIdAndUpdate(
+        theProduct[0]._id,
+        input,
+        {
+          new: true,
+        }
+      );
+    });
 
-  const updateUserTransaction = await Viewable.updateOne(
-    { Uid: userId },
-    {
-      cart: [],
-    }
-  );
+    const updateUserTransaction = await Viewable.updateOne(
+      { Uid: userId },
+      {
+        cart: [],
+      }
+    );
 
-  res.status(201).render("cartProduct", {
-    title: "Cart",
-    products: [],
-    total: null,
-    token: req.cookies.Token,
-    uid: req.cookies.Uid,
-    user: req.cookies.Username,
-    Type: req.cookies.Type || "none",
-  });
-}
+    res.status(201).render("cartProduct", {
+      title: "Cart",
+      products: [],
+      total: null,
+      token: req.cookies.Token,
+      uid: req.cookies.Uid,
+      user: req.cookies.Username,
+      Type: req.cookies.Type || "none",
+    });
+  }
 });
 
 const buyProducts = asyncHandler(async (req: Request, res: Response) => {
@@ -491,11 +515,12 @@ module.exports = {
   logoutUser,
   getUsers,
   getAgents,
+  banAgent,
   getCartItems,
   deleteCartProduct,
   deleteAllCartProduct,
   buyProducts,
   clearCart,
   getAgentItems,
-  getTransactions
+  getTransactions,
 };

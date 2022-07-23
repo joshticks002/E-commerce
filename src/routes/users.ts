@@ -1,8 +1,17 @@
 const express = require("express");
 const router = express.Router();
-import { Request, Response, NextFunction } from "express";
-const { userLogin, registerUser, logoutUser, getUsers, getAgents, getCartItems, getAgentItems, getTransactions } = require("../controllers/usercontroller");
-const { protect, adminProtect } = require('../middlewares/auth')
+const {
+  userLogin,
+  registerUser,
+  logoutUser,
+  getUsers,
+  getAgents,
+  banAgent,
+  getCartItems,
+  getAgentItems,
+  getTransactions,
+} = require("../controllers/usercontroller");
+const { protect, adminProtect } = require("../middlewares/auth");
 
 /* GET users listing. */
 router.get("/users", adminProtect, getUsers);
@@ -13,5 +22,6 @@ router.get("/products", protect, getAgentItems);
 router.get("/orders", protect, getTransactions);
 router.route("/register").post(registerUser);
 router.get("/logout", protect, logoutUser);
+router.post("/ban/agent", adminProtect, banAgent);
 
 module.exports = router;

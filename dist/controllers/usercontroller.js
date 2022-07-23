@@ -37,6 +37,16 @@ const getAgentItems = asyncHandler(async (req, res) => {
         Type: req.cookies.Type,
     });
 });
+const banAgent = asyncHandler(async (req, res) => {
+    const { email, banned } = req.body;
+    await Model.updateOne({ email: email.toLowerCase() }, {
+        isBanned: banned,
+    });
+    await Viewable.updateOne({ email: email.toLowerCase() }, {
+        isBanned: banned,
+    });
+    res.status(201).redirect("/users/agents");
+});
 const getTransactions = asyncHandler(async (req, res) => {
     const userId = req.cookies.Uid;
     const user = await Viewable.find({ Uid: userId });
@@ -160,11 +170,12 @@ const clearCart = asyncHandler(async (req, res) => {
         }));
         user[0].cart.forEach(async (cart) => await Viewable.updateOne({ Uid: userId }, {
             $push: {
-                products: { imageUrl: cart.imageUrl,
+                products: {
+                    imageUrl: cart.imageUrl,
                     name: cart.Name,
                     Quantity: cart.Quantity,
-                    price: Math.floor(Number(cart.Price.split('$')[1]) * (Math.random() + 1))
-                }
+                    price: Math.floor(Number(cart.Price.split("$")[1]) * (Math.random() + 1)),
+                },
             },
         }));
         user[0].cart.forEach(async (cart) => {
@@ -396,11 +407,12 @@ module.exports = {
     logoutUser,
     getUsers,
     getAgents,
+    banAgent,
     getCartItems,
     deleteCartProduct,
     deleteAllCartProduct,
     buyProducts,
     clearCart,
     getAgentItems,
-    getTransactions
+    getTransactions,
 };
