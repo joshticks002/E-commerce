@@ -7,6 +7,7 @@ const bcrypt = require("bcryptjs");
 const asyncHandler = require("express-async-handler");
 const { userInfo, userDetails } = require("../utils");
 const Products = require("../models/products");
+const Review = require("../models/review");
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
         expiresIn: "3d",
@@ -19,6 +20,41 @@ const getUsers = asyncHandler(async (req, res) => {
     res.status(201).render("usersInfo", {
         title: "Users Info",
         users: [...filtered],
+        token: req.cookies.Token,
+        uid: req.cookies.Uid,
+        user: req.cookies.Username,
+        Type: req.cookies.Type,
+    });
+});
+const getReviewPage = asyncHandler(async (req, res) => {
+    res.status(201).render("review", {
+        title: "Review Product",
+        product: req.body.name || "Nil",
+        token: req.cookies.Token,
+        uid: req.cookies.Uid,
+        user: req.cookies.Username,
+        Type: req.cookies.Type,
+    });
+});
+const submitReview = asyncHandler(async (req, res) => {
+    const { name, rate, description } = req.body;
+    const reviewed = await Review.find({ userId: req.cookies.Uid });
+    if (reviewed.length > 0) {
+        const ratedBefore = reviewed.filter((e) => e.productName === name);
+        if (ratedBefore.length > 0) {
+            res.status(403);
+            throw new Error("You can only review a product once.");
+        }
+    }
+    await Review.create({
+        productName: name,
+        userId: req.cookies.Uid,
+        rate: rate,
+        review: description,
+    });
+    res.status(201).render("404", {
+        title: "Reviewed",
+        message: "Successfully submitted",
         token: req.cookies.Token,
         uid: req.cookies.Uid,
         user: req.cookies.Username,
@@ -160,12 +196,16 @@ const deleteAllCartProduct = asyncHandler(async (req, res) => {
 const clearCart = asyncHandler(async (req, res) => {
     const userId = req.cookies.Uid;
     const user = await Viewable.find({ Uid: userId });
-    let prdName = "";
     const ref = req.params.ref;
     if (user[0].Agent) {
         user[0].cart.forEach(async (cart) => await Viewable.updateOne({ Uid: userId }, {
             $push: {
-                prevTransactions: `Your transaction with Reference(${ref}), name: ${cart.Name},price: ${cart.Price}, quantity: ${cart.Quantity}`,
+                prevTransactions: {
+                    reference: ref,
+                    name: cart.Name,
+                    price: cart.Price,
+                    quantity: cart.Quantity,
+                },
             },
         }));
         user[0].cart.forEach(async (cart) => await Viewable.updateOne({ Uid: userId }, {
@@ -210,7 +250,12 @@ const clearCart = asyncHandler(async (req, res) => {
     else {
         user[0].cart.forEach(async (cart) => await Viewable.updateOne({ Uid: userId }, {
             $push: {
-                prevTransactions: `Your transaction with Reference(${ref}), name: ${cart.Name},price: ${cart.Price}, quantity: ${cart.Quantity}`,
+                prevTransactions: {
+                    reference: ref,
+                    name: cart.Name,
+                    price: cart.Price,
+                    quantity: cart.Quantity,
+                },
             },
         }));
         user[0].cart.forEach(async (cart) => {
@@ -407,6 +452,8 @@ module.exports = {
     logoutUser,
     getUsers,
     getAgents,
+    getReviewPage,
+    submitReview,
     banAgent,
     getCartItems,
     deleteCartProduct,

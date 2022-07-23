@@ -8,8 +8,10 @@ const {
   getAgents,
   banAgent,
   getCartItems,
+  getReviewPage,
   getAgentItems,
   getTransactions,
+  submitReview
 } = require("../controllers/usercontroller");
 const { protect, adminProtect } = require("../middlewares/auth");
 
@@ -23,5 +25,7 @@ router.get("/orders", protect, getTransactions);
 router.route("/register").post(registerUser);
 router.get("/logout", protect, logoutUser);
 router.post("/ban/agent", adminProtect, banAgent);
+router.post("/review/product", protect, getReviewPage);
+router.post("/rate/product", protect, submitReview);
 
 module.exports = router;

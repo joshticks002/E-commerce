@@ -1,8 +1,7 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const router = express.Router();
-const { userLogin, registerUser, logoutUser, getUsers, getAgents, banAgent, getCartItems, getAgentItems, getTransactions, } = require("../controllers/usercontroller");
+const { userLogin, registerUser, logoutUser, getUsers, getAgents, banAgent, getCartItems, getReviewPage, getAgentItems, getTransactions, submitReview } = require("../controllers/usercontroller");
 const { protect, adminProtect } = require("../middlewares/auth");
 /* GET users listing. */
 router.get("/users", adminProtect, getUsers);
@@ -13,5 +12,7 @@ router.get("/products", protect, getAgentItems);
 router.get("/orders", protect, getTransactions);
 router.route("/register").post(registerUser);
 router.get("/logout", protect, logoutUser);
-router.post("/ban/agent", protect, banAgent);
+router.post("/ban/agent", adminProtect, banAgent);
+router.post("/review/product", protect, getReviewPage);
+router.post("/rate/product", protect, submitReview);
 module.exports = router;
